@@ -11,15 +11,33 @@ connect.then((db) => {
         name: 'Uthappizza',
         description: 'Testing description for mongoose scheme insertion'
     }).then((dish) => {
+        
         console.log(dish);
+        return Dishes.findByIdAndUpdate(dish._id, {
+            $set: { description: 'Updated test' },
+        }, {
+            new:true //once update of dish is complete, this will return a dish back to us and this new updated dish will then be passed to .then
+        }).exec(); //exec insures that this will get executed
+    
+    }).then((dish) => {
+    
+        console.log(dish);
+        dish.comments.push({
+            rating: 5,
+            comment: "I\'m getting a hike!",
+            author: "Leonardo Di Joe"
+        });
+        return dish.save();
 
-        return Dishes.find({}).exec(); //exec insures that this will get executed
-    }).then((dishes) => {
-        console.log(dishes);
+    }).then((dish) => {
+        
+        console.log(dish);
+        return dish.remove({});
 
-        return Dishes.remove({});
     }).then(() => {
+        
         return mongoose.connection.close();
+    
     }).catch(err => console.log(err))
 });
 
