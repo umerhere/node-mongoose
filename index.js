@@ -7,12 +7,10 @@ const connect = mongoose.connect(url);
 connect.then((db) => {
     console.log("COnnection established");
 
-    var newDish = Dishes({
+    Dishes.create({ //another method for creating the document
         name: 'Uthappizza',
         description: 'Testing description for mongoose scheme insertion'
-    })
-
-    newDish.save().then((dish) => {
+    }).then((dish) => {
         console.log(dish);
 
         return Dishes.find({}).exec(); //exec insures that this will get executed
